@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 
 	"github.com/google/uuid"
-	"github.com/riferrei/srclient"
+	"github.com/apvail/srclient"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 )
 
@@ -86,7 +86,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/riferrei/srclient"
+	"github.com/apvail/srclient"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 )
 

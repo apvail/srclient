@@ -1,8 +1,10 @@
 # Schema Registry Client for Go
 
- [![Go Report Card](https://goreportcard.com/badge/github.com/riferrei/srclient)](https://goreportcard.com/report/github.com/riferrei/srclient) [![Go Reference](https://pkg.go.dev/badge/github.com/riferrei/srclient.svg)](https://pkg.go.dev/github.com/riferrei/srclient)
+This is a fork of [riferrei's `srclient`](https://github.com/riferrei/srclient) which swaps riferrei's use of `github.com/linkedin/goavro` for `github.com/hamba/avro`. At the moment this has a high likelyhood of abandonment and replacement with something completely non-dependant on riferrei's repo, so I do not recommend relying on it without being prepared to maintain your own fork.
 
-<img src="https://github.com/riferrei/srclient/raw/master/images/Gopher_Dropping_Mic.png" width="150" height="150">
+ [![Go Report Card](https://goreportcard.com/badge/github.com/apvail/srclient)](https://goreportcard.com/report/github.com/apvail/srclient) [![Go Reference](https://pkg.go.dev/badge/github.com/apvail/srclient.svg)](https://pkg.go.dev/github.com/apvail/srclient)
+
+<img src="https://github.com/apvail/srclient/raw/master/images/Gopher_Dropping_Mic.png" width="150" height="150">
 
 **srclient** is a Golang client for [Schema Registry](https://www.confluent.io/confluent-schema-registry/), a software that provides a RESTful interface for developers to define standard schemas for their events, share them across the organization, and safely evolve them in a way that is backward compatible and future proof.
 Using this client allows developers to build Golang programs that write and read schema compatible records to/from [Apache Kafka](https://kafka.apache.org/) using [Avro](https://avro.apache.org/), [Protobuf](https://developers.google.com/protocol-buffers), and [JSON Schemas](https://json-schema.org) while Schema Registry is used to manage the schemas used.
@@ -28,7 +30,7 @@ Module install:
 This client is a Go module, therefore you can have it simply by adding the following import to your code:
 
 ```go
-import "github.com/riferrei/srclient"
+import "github.com/apvail/srclient"
 ```
 
 Then run a build to have this client automatically added to your go.mod file as a dependency.
@@ -36,7 +38,7 @@ Then run a build to have this client automatically added to your go.mod file as 
 Manual install:
 
 ```bash
-go get -u github.com/riferrei/srclient
+go get -u github.com/apvail/srclient
 ```
 
 ## Testing
@@ -56,7 +58,7 @@ docker compose down --rmi local
 
 ## Getting Started & Examples
 
-* [Package documentation](https://pkg.go.dev/github.com/riferrei/srclient) is a good place to start
+* [Package documentation](https://pkg.go.dev/github.com/apvail/srclient) is a good place to start
 * For Avro examples see [EXAMPLES_AVRO.md](EXAMPLES_AVRO.md)
 * For Protobuf examples, see [EXAMPLES_PROTOBUF.md](EXAMPLES_PROTOBUF.md)
 * Consult [Confluent's Schema Registry documentation](https://docs.confluent.io/platform/current/schema-registry/index.html) for details
