@@ -15,7 +15,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/linkedin/goavro/v2"
+	"github.com/hamba/avro/v2"
 	"github.com/santhosh-tekuri/jsonschema/v5"
 	"golang.org/x/sync/semaphore"
 )
@@ -119,7 +119,7 @@ type Schema struct {
 	schemaType *SchemaType
 	version    int
 	references []Reference
-	codec      *goavro.Codec
+	codec      avro.Schema
 	jsonSchema *jsonschema.Schema
 }
 
@@ -229,9 +229,9 @@ func (client *SchemaRegistryClient) GetSchema(schemaID int) (*Schema, error) {
 	if err != nil {
 		return nil, err
 	}
-	var codec *goavro.Codec
+	var codec avro.Schema
 	if client.getCodecCreationEnabled() {
-		codec, err = goavro.NewCodec(schemaResp.Schema)
+		codec, err = avro.Parse(schemaResp.Schema)
 		if err != nil {
 			return nil, err
 		}
@@ -459,9 +459,9 @@ func (client *SchemaRegistryClient) LookupSchema(subject string, schema string, 
 		return nil, err
 	}
 
-	var codec *goavro.Codec
+	var codec avro.Schema
 	if client.getCodecCreationEnabled() && schemaType == Avro {
-		codec, err = goavro.NewCodec(schemaResp.Schema)
+		codec, err = avro.Parse(schemaResp.Schema)
 		if err != nil {
 			return nil, err
 		}
@@ -615,9 +615,9 @@ func (client *SchemaRegistryClient) getVersion(subject string, version string) (
 	if err != nil {
 		return nil, err
 	}
-	var codec *goavro.Codec
+	var codec avro.Schema
 	if client.getCodecCreationEnabled() {
-		codec, err = goavro.NewCodec(schemaResp.Schema)
+		codec, err = avro.Parse(schemaResp.Schema)
 		if err != nil {
 			return nil, err
 		}
@@ -701,7 +701,7 @@ func NewSchema(
 	schemaType SchemaType,
 	version int,
 	references []Reference,
-	codec *goavro.Codec,
+	codec avro.Schema,
 	jsonSchema *jsonschema.Schema,
 ) (*Schema, error) {
 	if schema == "" {
@@ -746,9 +746,9 @@ func (schema *Schema) References() []Reference {
 // Codec ensures access to Codec
 // Will try to initialize a new one if it hasn't been initialized before
 // Will return nil if it can't initialize a codec from the schema
-func (schema *Schema) Codec() *goavro.Codec {
+func (schema *Schema) Codec() avro.Schema {
 	if schema.codec == nil {
-		codec, err := goavro.NewCodec(schema.Schema())
+		codec, err := avro.Parse(schema.Schema())
 		if err == nil {
 			schema.codec = codec
 		}

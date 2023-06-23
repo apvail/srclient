@@ -10,7 +10,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/linkedin/goavro/v2"
+	"github.com/hamba/avro/v2"
 	"github.com/santhosh-tekuri/jsonschema/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -565,7 +565,7 @@ func TestNewSchema(t *testing.T) {
 			Location: "aLocation",
 		}
 	)
-	mockCodec, _ := goavro.NewCodec(`"string"`)
+	mockCodec, _ := avro.Parse(`"string"`)
 	{
 		_, err := NewSchema(anId, "", aSchemaType, aVersion, nil, nil, nil)
 		assert.EqualError(t, err, "schema cannot be nil")
@@ -604,69 +604,69 @@ func TestNewSchema(t *testing.T) {
 }
 
 func TestSchemaRequestMarshal(t *testing.T) {
-	tests := map[string]struct{
-		schema string
+	tests := map[string]struct {
+		schema     string
 		schemaType SchemaType
 		references []Reference
-		expected string
+		expected   string
 	}{
 		"avro": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Avro,
-			expected: `{"schema":"test2"}`,
+			expected:   `{"schema":"test2"}`,
 		},
 		"protobuf": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Protobuf,
-			expected: `{"schema":"test2","schemaType":"PROTOBUF"}`,
+			expected:   `{"schema":"test2","schemaType":"PROTOBUF"}`,
 		},
 		"json": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Json,
-			expected: `{"schema":"test2","schemaType":"JSON"}`,
+			expected:   `{"schema":"test2","schemaType":"JSON"}`,
 		},
 		"avro-empty-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Avro,
 			references: make([]Reference, 0),
-			expected: `{"schema":"test2"}`,
+			expected:   `{"schema":"test2"}`,
 		},
 		"protobuf-empty-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Protobuf,
 			references: make([]Reference, 0),
-			expected: `{"schema":"test2","schemaType":"PROTOBUF"}`,
+			expected:   `{"schema":"test2","schemaType":"PROTOBUF"}`,
 		},
 		"json-empty-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Json,
 			references: make([]Reference, 0),
-			expected: `{"schema":"test2","schemaType":"JSON"}`,
+			expected:   `{"schema":"test2","schemaType":"JSON"}`,
 		},
 		"avro-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Avro,
 			references: []Reference{{Name: "name1", Subject: "subject1", Version: 1}},
-			expected: `{"schema":"test2","references":[{"name":"name1","subject":"subject1","version":1}]}`,
+			expected:   `{"schema":"test2","references":[{"name":"name1","subject":"subject1","version":1}]}`,
 		},
 		"protobuf-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Protobuf,
 			references: []Reference{{Name: "name1", Subject: "subject1", Version: 1}},
-			expected: `{"schema":"test2","schemaType":"PROTOBUF","references":[{"name":"name1","subject":"subject1","version":1}]}`,
+			expected:   `{"schema":"test2","schemaType":"PROTOBUF","references":[{"name":"name1","subject":"subject1","version":1}]}`,
 		},
 		"json-ref": {
-			schema: `test2`,
+			schema:     `test2`,
 			schemaType: Json,
 			references: []Reference{{Name: "name1", Subject: "subject1", Version: 1}},
-			expected: `{"schema":"test2","schemaType":"JSON","references":[{"name":"name1","subject":"subject1","version":1}]}`,
+			expected:   `{"schema":"test2","schemaType":"JSON","references":[{"name":"name1","subject":"subject1","version":1}]}`,
 		},
 	}
 
 	for name, testData := range tests {
 		t.Run(name, func(t *testing.T) {
 			schemaReq := schemaRequest{
-				Schema: testData.schema,
+				Schema:     testData.schema,
 				SchemaType: testData.schemaType.String(),
 				References: testData.references,
 			}

@@ -3,11 +3,12 @@ package srclient
 import (
 	"errors"
 	"fmt"
-	"github.com/linkedin/goavro/v2"
 	"net/url"
 	"regexp"
 	"sort"
 	"time"
+
+	"github.com/hamba/avro/v2"
 )
 
 // Compile-time interface check
@@ -292,7 +293,7 @@ func (mck *MockSchemaRegistryClient) generateVersion(id int, subject string, sch
 	}
 
 	// Add a codec, required otherwise Codec() panics
-	codec, _ := goavro.NewCodec(schema)
+	codec, _ := avro.Parse(schema)
 
 	schemaToRegister := &Schema{
 		id:         id,
