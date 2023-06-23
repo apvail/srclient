@@ -197,19 +197,16 @@ func CreateSchemaRegistryClientWithOptions(schemaRegistryURL string, client *htt
 
 // ResetCache resets the schema caches to be able to get updated schemas.
 func (client *SchemaRegistryClient) ResetCache() {
-
 	client.idSchemaCacheLock.Lock()
 	client.subjectSchemaCacheLock.Lock()
 	client.idSchemaCache = make(map[int]*Schema)
 	client.subjectSchemaCache = make(map[string]*Schema)
 	client.idSchemaCacheLock.Unlock()
 	client.subjectSchemaCacheLock.Unlock()
-
 }
 
 // GetSchema gets the schema associated with the given id.
 func (client *SchemaRegistryClient) GetSchema(schemaID int) (*Schema, error) {
-
 	if client.getCachingEnabled() {
 		client.idSchemaCacheLock.RLock()
 		cachedSchema := client.idSchemaCache[schemaID]
@@ -224,7 +221,7 @@ func (client *SchemaRegistryClient) GetSchema(schemaID int) (*Schema, error) {
 		return nil, err
 	}
 
-	var schemaResp = new(schemaResponse)
+	schemaResp := new(schemaResponse)
 	err = json.Unmarshal(resp, &schemaResp)
 	if err != nil {
 		return nil, err
@@ -236,7 +233,7 @@ func (client *SchemaRegistryClient) GetSchema(schemaID int) (*Schema, error) {
 			return nil, err
 		}
 	}
-	var schema = &Schema{
+	schema := &Schema{
 		id:         schemaID,
 		schema:     schemaResp.Schema,
 		version:    schemaResp.Version,
@@ -267,7 +264,7 @@ func (client *SchemaRegistryClient) GetSchemaVersions(subject string) ([]int, er
 		return nil, err
 	}
 
-	var versions = []int{}
+	versions := []int{}
 	err = json.Unmarshal(resp, &versions)
 	if err != nil {
 		return nil, err
@@ -290,7 +287,7 @@ func (client *SchemaRegistryClient) ChangeSubjectCompatibilityLevel(subject stri
 		return nil, err
 	}
 
-	var cfgChangeResp = new(configChangeResponse)
+	cfgChangeResp := new(configChangeResponse)
 	err = json.Unmarshal(resp, &cfgChangeResp)
 	if err != nil {
 		return nil, err
@@ -306,7 +303,7 @@ func (client *SchemaRegistryClient) GetGlobalCompatibilityLevel() (*Compatibilit
 		return nil, err
 	}
 
-	var configResponse = new(configResponse)
+	configResponse := new(configResponse)
 	err = json.Unmarshal(resp, &configResponse)
 	if err != nil {
 		return nil, err
@@ -323,7 +320,7 @@ func (client *SchemaRegistryClient) GetCompatibilityLevel(subject string, defaul
 		return nil, err
 	}
 
-	var configResponse = new(configResponse)
+	configResponse := new(configResponse)
 	err = json.Unmarshal(resp, &configResponse)
 	if err != nil {
 		return nil, err
@@ -338,7 +335,7 @@ func (client *SchemaRegistryClient) GetSubjects() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var allSubjects = []string{}
+	allSubjects := []string{}
 	err = json.Unmarshal(resp, &allSubjects)
 	if err != nil {
 		return nil, err
@@ -352,7 +349,7 @@ func (client *SchemaRegistryClient) GetSubjectsIncludingDeleted() ([]string, err
 	if err != nil {
 		return nil, err
 	}
-	var allSubjects = []string{}
+	allSubjects := []string{}
 	err = json.Unmarshal(resp, &allSubjects)
 	if err != nil {
 		return nil, err
@@ -370,7 +367,8 @@ func (client *SchemaRegistryClient) GetSchemaByVersion(subject string, version i
 // with the subject provided. It returns the newly created schema with
 // all its associated information.
 func (client *SchemaRegistryClient) CreateSchema(subject string, schema string,
-	schemaType SchemaType, references ...Reference) (*Schema, error) {
+	schemaType SchemaType, references ...Reference,
+) (*Schema, error) {
 	switch schemaType {
 	case Avro, Json:
 		compiledRegex := regexp.MustCompile(`\r?\n`)
@@ -466,7 +464,7 @@ func (client *SchemaRegistryClient) LookupSchema(subject string, schema string, 
 			return nil, err
 		}
 	}
-	var gotSchema = &Schema{
+	gotSchema := &Schema{
 		id:         schemaResp.ID,
 		schema:     schemaResp.Schema,
 		schemaType: schemaResp.SchemaType,
@@ -594,7 +592,6 @@ func (client *SchemaRegistryClient) CodecCreationEnabled(value bool) {
 }
 
 func (client *SchemaRegistryClient) getVersion(subject string, version string) (*Schema, error) {
-
 	if client.getCachingEnabled() {
 		cacheKey := cacheKey(subject, version)
 		client.subjectSchemaCacheLock.RLock()
@@ -622,7 +619,7 @@ func (client *SchemaRegistryClient) getVersion(subject string, version string) (
 			return nil, err
 		}
 	}
-	var schema = &Schema{
+	schema := &Schema{
 		id:         schemaResp.ID,
 		schema:     schemaResp.Schema,
 		schemaType: schemaResp.SchemaType,
@@ -650,7 +647,6 @@ func (client *SchemaRegistryClient) getVersion(subject string, version string) (
 }
 
 func (client *SchemaRegistryClient) httpRequest(method, uri string, payload io.Reader) ([]byte, error) {
-
 	url := fmt.Sprintf("%s%s", client.schemaRegistryURL, uri)
 	req, err := http.NewRequest(method, url, payload)
 	if err != nil {

@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package srclient
@@ -9,9 +10,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var srclientUrlEnvName = "SRCLIENT_URL"
-var srclientUrl string = os.Getenv(srclientUrlEnvName)
-var client *SchemaRegistryClient = CreateSchemaRegistryClient(srclientUrl)
+var (
+	srclientUrlEnvName                       = "SRCLIENT_URL"
+	srclientUrl        string                = os.Getenv(srclientUrlEnvName)
+	client             *SchemaRegistryClient = CreateSchemaRegistryClient(srclientUrl)
+)
 
 func TestGetSubjects(t *testing.T) {
 	subjects, err := client.GetSubjects()

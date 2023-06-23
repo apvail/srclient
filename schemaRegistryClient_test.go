@@ -23,7 +23,6 @@ func bodyToString(in io.ReadCloser) string {
 }
 
 func TestSchemaRegistryClient_CreateSchemaWithoutReferences(t *testing.T) {
-
 	{
 		server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 			responsePayload := schemaResponse{
@@ -52,7 +51,6 @@ func TestSchemaRegistryClient_CreateSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -95,7 +93,6 @@ func TestSchemaRegistryClient_CreateSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -139,7 +136,6 @@ func TestSchemaRegistryClient_LookupSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -179,7 +175,6 @@ func TestSchemaRegistryClient_LookupSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -223,7 +218,6 @@ func TestSchemaRegistryClient_LookupSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -267,7 +261,6 @@ func TestSchemaRegistryClient_LookupSchemaWithoutReferences(t *testing.T) {
 			default:
 				assert.Error(t, errors.New("unhandled request"))
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -307,7 +300,6 @@ func TestSchemaRegistryClient_GetSchemaByIDWithReferences(t *testing.T) {
 			default:
 				require.Fail(t, "unhandled request")
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
@@ -373,7 +365,6 @@ func TestSchemaRegistryClient_GetSchemaByVersionWithReferences(t *testing.T) {
 			default:
 				require.Fail(t, "unhandled request")
 			}
-
 		}))
 
 		srClient := CreateSchemaRegistryClient(server.URL)
